@@ -1,13 +1,18 @@
 <script setup>
-
 import NavigationBar from '@/Components/NavigationBar.vue';
-import {ref } from "vue";
-import {useForm} from "@inertiajs/vue3";
+import { ref, watchEffect } from "vue";
+import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     todos: {
-        type: Object,
+        type: Array
     }
+});
+
+const sortedAndFilteredTodos = ref([]);
+
+watchEffect(() => {
+    sortedAndFilteredTodos.value = [...props.todos];
 });
 
 const form = useForm({
@@ -23,10 +28,11 @@ function submit(todoKey) {
     form.post("/todo")
 }
 
-
 function trier() {
+    sortedAndFilteredTodos.value.sort((a, b) => {
+        return a.title.localeCompare(b.title);
+    });
 }
-
 </script>
 
 <template>
@@ -36,9 +42,9 @@ function trier() {
     </div>
     <div class="container d-flex justify-content-center mt-2">
         <button class="btn btn-warning mr-3" @click="trier">Trier</button>
-        <button class="btn btn-warning">Trier</button>
+        <button class="btn btn-warning">Autre Bouton</button>
     </div>
-    <div v-for="(todo) in todos" :key="todo['id']">
+    <div v-for="(todo) in sortedAndFilteredTodos" :key="todo['id']">
         <div class="container justify-center p-3" style="width: 300px">
             <div class="shadow p-3 d-flex justify-content-between rounded">
                 <p :class="{lineThrough: todo['isDone'] === 1}">{{todo['id']}}. {{todo['title']}}</p>
@@ -48,8 +54,7 @@ function trier() {
                         class="form-control"
                         v-model="checkedItems[todo['id']]"
                         @change="submit(todo['id'])"
-                        :checked="todo['isDone']"
-                    />
+                        :checked="todo['isDone'] === 1" />
                 </form>
             </div>
         </div>
