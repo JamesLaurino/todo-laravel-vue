@@ -14,7 +14,11 @@ class TodoController extends Controller
         return Inertia::render('Principal', ["todos" => $todos]);
     }
 
-    public function store(Request $request)
+    public function create() {
+
+    }
+
+    public function update(Request $request)
     {
 
         $validated = $request->validate([
