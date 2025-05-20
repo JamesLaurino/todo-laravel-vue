@@ -25,7 +25,7 @@ const checkedItems = ref({});
 function submit(todoKey) {
     form.isDone = checkedItems.value[todoKey];
     form.id = todoKey;
-    form.post("/todo")
+    form.put("/todo")
 }
 
 function trier() {
