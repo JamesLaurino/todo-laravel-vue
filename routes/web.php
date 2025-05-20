@@ -29,4 +29,12 @@ Route::get('/', [TodoController::class, 'index'])->name('todo.index');
 
 Route::put('/todo', [TodoController::class, 'update'])->name('todo.update');
 
+Route::post('/todo', [TodoController::class, 'store'])->name('todo.store');
+
+Route::get('/todo/add', [TodoController::class, 'createShow'])->name('todo.createShow');
+
+Route::get('/todo/delete', [TodoController::class, 'delete'])->name('todo.delete');
+
+Route::delete('/todo/{id}', [TodoController::class, 'destroy'])->name('todo.destroy');
+
 require __DIR__.'/auth.php';
